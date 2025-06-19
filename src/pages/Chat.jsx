@@ -32,6 +32,33 @@ export default function Chat() {
   const [newMsg, setNewMsg] = useState("");
   const [showRequests, setShowRequests] = useState(false);
 
+  const [deferredPrompt, setDeferredPrompt] = useState(null);
+  const [showInstall, setShowInstall] = useState(false);
+
+  useEffect(() => {
+    const handler = (e) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+      setShowInstall(true);
+    };
+
+    window.addEventListener("beforeinstallprompt", handler);
+
+    return () => window.removeEventListener("beforeinstallprompt", handler);
+  }, []);
+
+  const handleInstallClick = async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      if (outcome === "accepted") {
+        console.log("App installed");
+      }
+      setDeferredPrompt(null);
+      setShowInstall(false);
+    }
+  };
+
   // 🔁 Auth listener and data loaders
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (u) => {
@@ -212,17 +239,28 @@ export default function Chat() {
             onClick={() => setShowRequests(!showRequests)}
           />
         </div>
+
         <h3 className="m-0">ChatDesk</h3>
         <div className="d-flex align-items-center gap-3">
-          <span className="text-light small">
-            {user?.displayName || "User"}
-          </span>
-          <button
-            className="btn btn-sm btn-outline-light"
-            onClick={handleLogout}
-          >
-            Logout
-          </button>
+          <div className="d-flex align-items-center gap-3">
+            {showInstall && (
+              <button
+                className="btn btn-sm btn-outline-info me-2"
+                onClick={handleInstallClick}
+              >
+                Download App
+              </button>
+            )}
+            <span className="text-light small">
+              {user?.displayName || "User"}
+            </span>
+            <button
+              className="btn btn-sm btn-outline-light"
+              onClick={handleLogout}
+            >
+              Logout
+            </button>
+          </div>
         </div>
       </div>
 
