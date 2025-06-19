@@ -12,10 +12,7 @@ body, html {
 
 /* Sidebar Styling */
 .sidebar {
-  background-color: #ffffff;
-  border-right: 1px solid #ddd;
-  padding: 1rem;
-  height: 100%;
+  background-color: #f8f9fa;
   overflow-y: auto;
 }
 
@@ -37,16 +34,32 @@ body, html {
 /* Chat Area */
 .chat-area {
   background-color: #fff;
-  border-left: 1px solid #ddd;
-  padding: 1rem;
   height: 100%;
-  display: flex;
-  flex-direction: column;
 }
 
 .chat-area h5 {
   margin-bottom: 1rem;
   color: #333;
+}
+
+.message-box {
+  flex-grow: 1;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  background: #fdfdfd;
+}
+
+.message-box .text-start,
+.message-box .text-end {
+  margin-bottom: 5px;
+}
+
+.send-area {
+  display: flex;
+  gap: 10px;
 }
 
 .chat-messages {
@@ -98,9 +111,7 @@ body, html {
 
 /* Responsive Behavior */
 @media (max-width: 768px) {
-  .sidebar {
-    flex: 1 1 100%;
-    max-width: 100%;
+ .sidebar {
     border-right: none;
     border-bottom: 1px solid #ccc;
   }
@@ -117,5 +128,13 @@ body, html {
   .request-popup {
     width: 100% !important;
     left: 0 !important;
+  }
+
+  .send-area input {
+    flex: 1;
+  }
+
+  .send-area button {
+    flex-shrink: 0;
   }
 }

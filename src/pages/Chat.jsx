@@ -263,9 +263,9 @@ export default function Chat() {
       )}
 
       {/* Main Content */}
-      <div className="row flex-grow-1 flex-wrap">
+      <div className="row flex-grow-1 flex-column flex-md-row m-0">
         {/* Sidebar */}
-        <div className="col-md-3 p-3 border-end overflow-auto sidebar">
+        <div className="col-md-3 bg-light p-3 border-end sidebar">
           <h5>Search Friends</h5>
           <input className="form-control mb-3" placeholder="Search..." />
 
