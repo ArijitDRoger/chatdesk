@@ -1,4 +1,5 @@
 // src/pages/Chat.jsx
+import "./Chat.css";
 import React, { useEffect, useState } from "react";
 import { signOut, onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "../services/firebase";
