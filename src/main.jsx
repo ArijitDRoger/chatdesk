@@ -1,8 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
-import "./theme.css";
-import "./pages/Chat.css"; // adjust path if needed
 
 import "bootstrap/dist/css/bootstrap.min.css";
 

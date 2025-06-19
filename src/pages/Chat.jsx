@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { signOut, onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "../services/firebase";
 import { useNavigate } from "react-router-dom";
+import "../pages/Chat.css"; // adjust path if needed
 import {
   collection,
   query,
@@ -212,31 +213,38 @@ export default function Chat() {
   };
 
   return (
-    <div>
-      <header>
-        <div>
+    <div className="chat-app">
+      {/* Header */}
+      <header className="chat-header">
+        <div className="header-left">
           <FaBell />
           <FaUserFriends onClick={() => setShowRequests(!showRequests)} />
         </div>
 
-        <h3>ChatDesk</h3>
-        <div>
+        <h3 className="app-title">ChatDesk</h3>
+
+        <div className="header-right">
           {showInstall && (
-            <button onClick={handleInstallClick}>Download App</button>
+            <button onClick={handleInstallClick} className="btn-install">
+              Download App
+            </button>
           )}
           <span>{user?.displayName || "User"}</span>
-          <button onClick={handleLogout}>Logout</button>
+          <button onClick={handleLogout} className="btn-logout">
+            Logout
+          </button>
         </div>
       </header>
 
+      {/* Friend Requests */}
       {showRequests && (
-        <div>
+        <div className="friend-requests">
           <h6>Friend Requests</h6>
           {friendRequests.length === 0 ? (
             <p>No requests</p>
           ) : (
             friendRequests.map((req) => (
-              <div key={req.id}>
+              <div key={req.id} className="request-item">
                 <span>{getFriendName(req.from)}</span>
                 <div>
                   <button onClick={() => acceptRequest(req)}>✓</button>
@@ -248,8 +256,10 @@ export default function Chat() {
         </div>
       )}
 
-      <main>
-        <section>
+      {/* Main Layout */}
+      <main className="chat-main">
+        {/* Sidebar */}
+        <aside className="sidebar">
           <h5>Search Friends</h5>
           <input placeholder="Search..." />
           <h5>Friends</h5>
@@ -258,7 +268,6 @@ export default function Chat() {
               {getFriendName(f.friendId)}
             </div>
           ))}
-
           <h5>Suggestions</h5>
           {suggestions.map((s) => (
             <div key={s.uid}>
@@ -268,21 +277,21 @@ export default function Chat() {
               </button>
             </div>
           ))}
-        </section>
+        </aside>
 
-        <section>
+        {/* Chat Area */}
+        <section className="chat-area">
           {selectedFriend ? (
             <>
               <h5>Chatting with {getFriendName(selectedFriend.friendId)}</h5>
-              <div>
+              <div className="message-box">
                 {messages.map((msg, i) => (
                   <div key={i}>
-                    <span>{msg.text}</span>
+                    <span className="chat-bubble">{msg.text}</span>
                   </div>
                 ))}
               </div>
-
-              <div>
+              <div className="message-input">
                 <input
                   value={newMsg}
                   onChange={(e) => setNewMsg(e.target.value)}
@@ -291,7 +300,7 @@ export default function Chat() {
               </div>
             </>
           ) : (
-            <div>
+            <div className="empty-chat">
               <h5>Select a friend to start chatting</h5>
             </div>
           )}
