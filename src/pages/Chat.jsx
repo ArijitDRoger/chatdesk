@@ -285,12 +285,29 @@ export default function Chat() {
             <>
               <h5>Chatting with {getFriendName(selectedFriend.friendId)}</h5>
               <div className="message-box">
-                {messages.map((msg, i) => (
-                  <div key={i}>
-                    <span className="chat-bubble">{msg.text}</span>
-                  </div>
-                ))}
+                {messages.map((msg, i) => {
+                  const time =
+                    msg.timestamp?.toDate?.().toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    }) || "";
+
+                  return (
+                    <div
+                      key={i}
+                      className={`chat-message ${
+                        msg.from === user.uid ? "sent" : "received"
+                      }`}
+                    >
+                      <span>{msg.text}</span>
+                      <small className="timestamp">{time}</small>
+                    </div>
+                  );
+                })}
+
+                <div id="chat-end" />
               </div>
+
               <div className="message-input">
                 <input
                   value={newMsg}

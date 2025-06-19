@@ -84,10 +84,47 @@ section:last-child h5 {
 }
 
 .message-box {
-  flex: 1;
+  flex-grow: 1;
   overflow-y: auto;
-  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px;
 }
+
+
+.chat-message {
+  display: flex;
+  flex-direction: column;
+  max-width: 80%;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background-color: #400080;
+  color: #FFCC00;
+  align-self: flex-start;
+}
+
+/* Message from current user */
+.chat-message.sent {
+  background-color: #490387;
+  align-self: flex-end;
+}
+
+.timestamp {
+  font-size: 0.75rem;
+  color: #ccc;
+  margin-top: 4px;
+  align-self: flex-end;
+}
+
+/* Message from friend */
+.chat-message.received {
+  background-color: #fff;
+  color: #400080;
+  align-self: flex-start;
+  text-align: left;
+}
+
 
 .chat-bubble {
   display: inline-block;
