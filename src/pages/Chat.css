@@ -1,140 +1,102 @@
-/* ChatDesk Layout */
-body, html {
-  height: 100%;
-  margin: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f7f7f7;
+:root {
+  --navy: #0b0033;
+  --dark-purple: #400080;
+  --purple: #a033ff;
+  --yellow: #ffcc00;
+  --text-light: #ffffff;
 }
 
-.pointer {
-  cursor: pointer;
-}
-
-/* Sidebar Styling */
-.sidebar {
-  background-color: #f8f9fa;
-  overflow-y: auto;
-}
-
-.sidebar h5 {
-  margin-top: 1rem;
-  font-size: 1.1rem;
-  color: #444;
-}
-
-.sidebar .p-2 {
-  background-color: #f5f5f5;
-  border-radius: 8px;
-  transition: background 0.2s ease;
-}
-.sidebar .p-2:hover {
-  background-color: #eaeaea;
-}
-
-/* Chat Area */
-.chat-area {
-  background-color: #fff;
-  height: 100%;
-}
-
-.chat-area h5 {
-  margin-bottom: 1rem;
-  color: #333;
-}
-
-.message-box {
-  flex-grow: 1;
-  overflow-y: auto;
-  border: 1px solid #ccc;
-  padding: 10px;
-  margin-bottom: 10px;
-  border-radius: 5px;
-  background: #fdfdfd;
-}
-
-.message-box .text-start,
-.message-box .text-end {
-  margin-bottom: 5px;
-}
-
-.send-area {
-  display: flex;
-  gap: 10px;
-}
-
-.chat-messages {
-  flex-grow: 1;
-  overflow-y: auto;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 1rem;
-  background: #f9f9f9;
-}
-
-.chat-messages .text-start .badge {
-  background-color: #e0e0e0;
-  color: #333;
-  margin-bottom: 0.5rem;
-  padding: 0.5rem;
-  display: inline-block;
-  border-radius: 1rem;
-}
-
-.chat-messages .text-end .badge {
-  background-color: #007bff;
-  color: white;
-  margin-bottom: 0.5rem;
-  padding: 0.5rem;
-  display: inline-block;
-  border-radius: 1rem;
+/* Global background */
+body {
+  background-color: var(--navy);
+  color: var(--text-light);
+  font-family: "Segoe UI", sans-serif;
 }
 
 /* Header */
 .header {
-  background-color: #343a40;
-  color: white;
-  padding: 1rem;
+  background-color: var(--dark-purple);
+  color: var(--yellow);
 }
 
-.header .btn-outline-light {
-  border-radius: 20px;
+/* Buttons */
+.btn-primary {
+  background-color: var(--purple);
+  border: none;
+  color: var(--text-light);
 }
 
-/* Friend Requests Popup */
-.friend-popup {
-  background-color: white;
+.btn-primary:hover {
+  background-color: var(--dark-purple);
+}
+
+.btn-outline-light {
+  color: var(--yellow);
+  border-color: var(--yellow);
+}
+
+.btn-outline-light:hover {
+  background-color: var(--yellow);
+  color: var(--navy);
+}
+
+/* Sidebar (Friends + Suggestions) */
+.sidebar {
+  background-color: var(--dark-purple);
+  color: var(--yellow);
+}
+
+.sidebar .friend-item,
+.sidebar .suggestion-item {
+  background-color: var(--purple);
+  color: var(--text-light);
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
   border-radius: 8px;
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
-  max-height: 300px;
+}
+
+/* Chat area */
+.chat-box {
+  background-color: var(--navy);
+  color: var(--yellow);
+  border: 1px solid var(--purple);
+  padding: 1rem;
+  border-radius: 8px;
+  height: 100%;
   overflow-y: auto;
 }
 
-/* Responsive Behavior */
-@media (max-width: 768px) {
- .sidebar {
-    border-right: none;
-    border-bottom: 1px solid #ccc;
-  }
+.message {
+  margin-bottom: 0.5rem;
+}
 
-  .chat-area {
-    flex: 1 1 100%;
-    max-width: 100%;
-  }
+.message.sent {
+  text-align: right;
+}
 
-  .friend-btn {
-    width: 100%;
-  }
+.message.received {
+  text-align: left;
+}
 
-  .request-popup {
-    width: 100% !important;
-    left: 0 !important;
-  }
+.message .badge {
+  background-color: var(--purple);
+  color: var(--text-light);
+  padding: 0.5rem;
+  border-radius: 10px;
+}
 
-  .send-area input {
-    flex: 1;
-  }
+/* Input box */
+input.form-control {
+  background-color: var(--dark-purple);
+  color: var(--yellow);
+  border: 1px solid var(--purple);
+}
 
-  .send-area button {
-    flex-shrink: 0;
-  }
+input::placeholder {
+  color: #dddddd;
+}
+
+/* Utility */
+.pointer {
+  cursor: pointer;
 }
