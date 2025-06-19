@@ -98,18 +98,24 @@ body, html {
 
 /* Responsive Behavior */
 @media (max-width: 768px) {
-  .row.flex-grow-1 {
-    flex-direction: column;
-  }
-
   .sidebar {
-    order: 2;
+    flex: 1 1 100%;
+    max-width: 100%;
     border-right: none;
-    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ccc;
   }
 
   .chat-area {
-    order: 1;
-    border-left: none;
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
+
+  .friend-btn {
+    width: 100%;
+  }
+
+  .request-popup {
+    width: 100% !important;
+    left: 0 !important;
   }
 }
