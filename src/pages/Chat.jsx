@@ -1,5 +1,3 @@
-// src/pages/Chat.jsx
-import "./Chat.css";
 import React, { useEffect, useState } from "react";
 import { signOut, onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "../services/firebase";
@@ -31,20 +29,16 @@ export default function Chat() {
   const [messages, setMessages] = useState([]);
   const [newMsg, setNewMsg] = useState("");
   const [showRequests, setShowRequests] = useState(false);
-
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [showInstall, setShowInstall] = useState(false);
 
   useEffect(() => {
     const handler = (e) => {
-      console.log("🔥 beforeinstallprompt fired");
       e.preventDefault();
       setDeferredPrompt(e);
       setShowInstall(true);
     };
-
     window.addEventListener("beforeinstallprompt", handler);
-
     return () => window.removeEventListener("beforeinstallprompt", handler);
   }, []);
 
@@ -60,7 +54,6 @@ export default function Chat() {
     }
   };
 
-  // 🔁 Auth listener and data loaders
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (u) => {
       if (u) {
@@ -72,7 +65,6 @@ export default function Chat() {
         navigate("/login");
       }
     });
-
     return () => unsubscribe();
   }, []);
 
@@ -82,7 +74,6 @@ export default function Chat() {
     }
   }, [user, friends]);
 
-  // 🔁 Real-time message listener
   useEffect(() => {
     if (!user || !selectedFriend || !selectedFriend.friendId) return;
 
@@ -110,7 +101,6 @@ export default function Chat() {
 
     const friendIds = friends.map((f) => f.friendId);
 
-    // Get outgoing friend requests
     const reqSnap = await getDocs(
       query(collection(db, "friendRequests"), where("from", "==", uid))
     );
@@ -130,12 +120,9 @@ export default function Chat() {
     const q = query(collection(db, "friends"), where("userId", "==", uid));
     return onSnapshot(q, (snapshot) => {
       const data = snapshot.docs.map((doc) => doc.data());
-
-      // Remove duplicate friendIds just in case
       const unique = Array.from(
         new Map(data.map((f) => [f.friendId, f])).values()
       );
-
       setFriends(unique);
     });
   };
@@ -176,19 +163,15 @@ export default function Chat() {
       userId: user.uid,
       friendId: req.from,
     });
-
     await setDoc(doc(db, "friends", `${req.from}_${user.uid}`), {
       userId: req.from,
       friendId: user.uid,
     });
-
     await addDoc(collection(db, "friends"), {
       userId: req.from,
       friendId: user.uid,
     });
-
     await deleteDoc(doc(db, "friendRequests", req.id));
-
     fetchFriends(user.uid);
     fetchSuggestions(user.uid);
   };
@@ -229,72 +212,35 @@ export default function Chat() {
   };
 
   return (
-    <div className="container-fluid vh-100 d-flex flex-column p-0">
-      {/* Header */}
-      <div className="bg-dark text-white d-flex align-items-center justify-content-between p-3">
-        <div className="d-flex align-items-center gap-3">
-          <FaBell className="pointer" title="Notifications" />
-          <FaUserFriends
-            className="pointer"
-            title="Friend Requests"
-            onClick={() => setShowRequests(!showRequests)}
-          />
+    <div>
+      <header>
+        <div>
+          <FaBell />
+          <FaUserFriends onClick={() => setShowRequests(!showRequests)} />
         </div>
 
-        <h3 className="m-0">ChatDesk</h3>
-        <div className="d-flex align-items-center gap-3">
-          <div className="d-flex align-items-center gap-3">
-            {showInstall && (
-              <button
-                className="btn btn-sm btn-outline-info me-2"
-                onClick={handleInstallClick}
-              >
-                Download App
-              </button>
-            )}
-
-            <span className="text-light small">
-              {user?.displayName || "User"}
-            </span>
-            <button
-              className="btn btn-sm btn-outline-light"
-              onClick={handleLogout}
-            >
-              Logout
-            </button>
-          </div>
+        <h3>ChatDesk</h3>
+        <div>
+          {showInstall && (
+            <button onClick={handleInstallClick}>Download App</button>
+          )}
+          <span>{user?.displayName || "User"}</span>
+          <button onClick={handleLogout}>Logout</button>
         </div>
-      </div>
+      </header>
 
-      {/* Friend Requests Popup */}
       {showRequests && (
-        <div
-          className="position-absolute bg-white border p-3 request-popup"
-          style={{ top: "60px", left: "20px", zIndex: 10, width: "280px" }}
-        >
+        <div>
           <h6>Friend Requests</h6>
           {friendRequests.length === 0 ? (
-            <p className="text-muted">No requests</p>
+            <p>No requests</p>
           ) : (
             friendRequests.map((req) => (
-              <div
-                key={req.id}
-                className="d-flex justify-content-between align-items-center border-bottom py-2"
-              >
-                <span className="small">{getFriendName(req.from)}</span>
+              <div key={req.id}>
+                <span>{getFriendName(req.from)}</span>
                 <div>
-                  <button
-                    className="btn btn-sm btn-success me-1"
-                    onClick={() => acceptRequest(req)}
-                  >
-                    ✓
-                  </button>
-                  <button
-                    className="btn btn-sm btn-danger"
-                    onClick={() => rejectRequest(req)}
-                  >
-                    ×
-                  </button>
+                  <button onClick={() => acceptRequest(req)}>✓</button>
+                  <button onClick={() => rejectRequest(req)}>×</button>
                 </div>
               </div>
             ))
@@ -302,77 +248,55 @@ export default function Chat() {
         </div>
       )}
 
-      {/* Main Content */}
-      <div className="row flex-grow-1 flex-column flex-md-row m-0">
-        {/* Sidebar */}
-        <div className="col-md-3 bg-light p-3 border-end sidebar">
+      <main>
+        <section>
           <h5>Search Friends</h5>
-          <input className="form-control mb-3" placeholder="Search..." />
-
+          <input placeholder="Search..." />
           <h5>Friends</h5>
           {friends.map((f, i) => (
-            <div
-              key={i}
-              className="p-2 border mb-2 pointer"
-              onClick={() => setSelectedFriend(f)}
-            >
+            <div key={i} onClick={() => setSelectedFriend(f)}>
               {getFriendName(f.friendId)}
             </div>
           ))}
 
           <h5>Suggestions</h5>
           {suggestions.map((s) => (
-            <div key={s.uid} className="p-2 border mb-2">
+            <div key={s.uid}>
               <div>{s.name}</div>
-              <button
-                className="btn btn-sm btn-primary mt-1 friend-btn"
-                onClick={() => sendFriendRequest(s.uid)}
-              >
+              <button onClick={() => sendFriendRequest(s.uid)}>
                 Send Request
               </button>
             </div>
           ))}
-        </div>
+        </section>
 
-        {/* Chat Area */}
-        <div className="col-md-9 p-3 d-flex flex-column chat-area">
+        <section>
           {selectedFriend ? (
             <>
               <h5>Chatting with {getFriendName(selectedFriend.friendId)}</h5>
-              <div className="flex-grow-1 overflow-auto border p-2 mb-3">
+              <div>
                 {messages.map((msg, i) => (
-                  <div
-                    key={i}
-                    className={
-                      msg.from === user.uid ? "text-end" : "text-start"
-                    }
-                  >
-                    <span className="badge bg-secondary">{msg.text}</span>
+                  <div key={i}>
+                    <span>{msg.text}</span>
                   </div>
                 ))}
               </div>
 
-              <div className="d-flex">
+              <div>
                 <input
-                  className="form-control"
                   value={newMsg}
                   onChange={(e) => setNewMsg(e.target.value)}
                 />
-                <button
-                  className="btn btn-primary ms-2"
-                  onClick={handleSendMessage}
-                >
-                  Send
-                </button>
+                <button onClick={handleSendMessage}>Send</button>
               </div>
             </>
           ) : (
-            <div className="text-center text-muted my-auto">
+            <div>
               <h5>Select a friend to start chatting</h5>
             </div>
           )}
-        </div>
-      </div>
+        </section>
+      </main>
     </div>
   );
 }
