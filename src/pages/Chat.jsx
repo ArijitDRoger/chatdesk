@@ -229,7 +229,7 @@ export default function Chat() {
       {/* Friend Requests Popup */}
       {showRequests && (
         <div
-          className="position-absolute bg-white border p-3"
+          className="position-absolute bg-white border p-3 request-popup"
           style={{ top: "60px", left: "20px", zIndex: 10, width: "280px" }}
         >
           <h6>Friend Requests</h6>
@@ -263,9 +263,9 @@ export default function Chat() {
       )}
 
       {/* Main Content */}
-      <div className="row flex-grow-1">
+      <div className="row flex-grow-1 flex-wrap">
         {/* Sidebar */}
-        <div className="col-3 bg-light p-3 border-end overflow-auto">
+        <div className="col-md-3 p-3 border-end overflow-auto sidebar">
           <h5>Search Friends</h5>
           <input className="form-control mb-3" placeholder="Search..." />
 
@@ -285,7 +285,7 @@ export default function Chat() {
             <div key={s.uid} className="p-2 border mb-2">
               <div>{s.name}</div>
               <button
-                className="btn btn-sm btn-primary mt-1"
+                className="btn btn-sm btn-primary mt-1 friend-btn"
                 onClick={() => sendFriendRequest(s.uid)}
               >
                 Send Request
@@ -295,7 +295,7 @@ export default function Chat() {
         </div>
 
         {/* Chat Area */}
-        <div className="col-9 p-3 d-flex flex-column">
+        <div className="col-md-9 p-3 d-flex flex-column chat-area">
           {selectedFriend ? (
             <>
               <h5>Chatting with {getFriendName(selectedFriend.friendId)}</h5>
