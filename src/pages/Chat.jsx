@@ -76,6 +76,11 @@ export default function Chat() {
   }, [user, friends]);
 
   useEffect(() => {
+    const msgEnd = document.getElementById("chat-end");
+    msgEnd?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
+  useEffect(() => {
     if (!user || !selectedFriend || !selectedFriend.friendId) return;
 
     const chatId =
