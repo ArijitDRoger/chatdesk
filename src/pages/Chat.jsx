@@ -37,6 +37,7 @@ export default function Chat() {
 
   useEffect(() => {
     const handler = (e) => {
+      console.log("🔥 beforeinstallprompt fired");
       e.preventDefault();
       setDeferredPrompt(e);
       setShowInstall(true);
@@ -251,6 +252,7 @@ export default function Chat() {
                 Download App
               </button>
             )}
+
             <span className="text-light small">
               {user?.displayName || "User"}
             </span>
